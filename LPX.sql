@@ -6,38 +6,38 @@
 -- -----------------------------------------------------
 -- Table `Usuario`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Usuario` ;
 
-CREATE TABLE IF NOT EXISTS `Usuario` (
-  `idUsuario` INT NOT NULL AUTO_INCREMENT COMMENT '',
-  `nome` VARCHAR(20) NOT NULL COMMENT '',
-  `hashSenha` VARCHAR(10) NULL COMMENT '',
-  PRIMARY KEY (`idUsuario`)  COMMENT '');
+
+CREATE TABLE Usuario (
+  idUsuario INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+  nome VARCHAR(20) NOT NULL,
+  hashSenha VARCHAR(10) NOT NULL);
 
 
 -- -----------------------------------------------------
 -- Table `Livro`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Livro` ;
 
-CREATE TABLE IF NOT EXISTS `Livro` (
-  `idLivro` INT NOT NULL AUTO_INCREMENT COMMENT '',
-  `titulo` VARCHAR(20) NOT NULL COMMENT '',
-  `genero` VARCHAR(20) NOT NULL COMMENT '',
-  `autor` VARCHAR(20) NOT NULL COMMENT '',
-  `editora` VARCHAR(10) NOT NULL COMMENT '',
-  `publicacao` DATETIME NOT NULL COMMENT '',
-  `preco` DECIMAL(5,2) NOT NULL COMMENT '',
-  PRIMARY KEY (`idLivro`)  COMMENT '');
+
+CREATE TABLE Livro (
+  idLivro INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+  titulo VARCHAR(20) NOT NULL,
+  genero VARCHAR(20) NOT NULL,
+  autor VARCHAR(20) NOT NULL,
+  editora VARCHAR(10) NOT NULL,
+  publicacao DATE NOT NULL,
+  preco DECIMAL(5,2) NOT NULL);
 
 
 -- -----------------------------------------------------
 -- Table `Usuario_avalia_Livro`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Usuario_avalia_Livro` ;
 
-CREATE TABLE IF NOT EXISTS `Usuario_avalia_Livro` (
-  `Usuario_idUsuario` INT NOT NULL COMMENT '',
-  `Livro_idLivro` INT NOT NULL COMMENT '',
-  `nota` INT NOT NULL COMMENT '',
-  PRIMARY KEY (`Usuario_idUsuario`, `Livro_idLivro`)  COMMENT '');
+CREATE TABLE Usuario_avalia_Livro(
+  idUsuario INTEGER NOT NULL,
+  FOREIGN KEY (idUsuario) REFERENCES Usuario (idUsuario) ON DELETE CASCADE,
+  idLivro INTEGER NOT NULL,
+  FOREIGN KEY (idLivro) REFERENCES Livro (idLivro) ON DELETE CASCADE,
+  nota INTEGER NOT NULL);
+
+

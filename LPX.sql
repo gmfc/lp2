@@ -9,7 +9,7 @@
 
 
 CREATE TABLE Usuario (
-  idUsuario INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+  idUsuario INTEGER NOT NULL PRIMARY KEY,
   nome VARCHAR(20) NOT NULL,
   hashSenha VARCHAR(10) NOT NULL);
 
@@ -20,11 +20,11 @@ CREATE TABLE Usuario (
 
 
 CREATE TABLE Livro (
-  idLivro INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
-  titulo VARCHAR(20) NOT NULL,
+  idLivro INTEGER NOT NULL PRIMARY KEY,
+  titulo VARCHAR(40) NOT NULL,
   genero VARCHAR(20) NOT NULL,
   autor VARCHAR(20) NOT NULL,
-  editora VARCHAR(10) NOT NULL,
+  editora VARCHAR(20) NOT NULL,
   publicacao DATE NOT NULL,
   preco DECIMAL(5,2) NOT NULL);
 
@@ -39,5 +39,11 @@ CREATE TABLE Usuario_avalia_Livro(
   idLivro INTEGER NOT NULL,
   FOREIGN KEY (idLivro) REFERENCES Livro (idLivro) ON DELETE CASCADE,
   nota INTEGER NOT NULL);
-
-
+  
+INSERT INTO Livro (idLivro,titulo,genero,autor,editora,publicacao,preco) VALUES (1,'O terrivel NaN','Terror','Ozzy','Velha grafica','1986-10-11',125.68);
+INSERT INTO Livro (idLivro,titulo,genero,autor,editora,publicacao,preco) VALUES (2,'As cronicas de Java','Fantasia','Susu','NotAEdit','2002-05-05',64.15);
+INSERT INTO Livro (idLivro,titulo,genero,autor,editora,publicacao,preco) VALUES (3,'O chapeu pontudo','Drama','Gabs','Grafica dramatica','1900-10-15',5.99);
+INSERT INTO Livro (idLivro,titulo,genero,autor,editora,publicacao,preco) VALUES (4,'As aventuras de Cesar XX','Comedia','O proprio','Pictografica','1500-10-15',150.12);
+INSERT INTO Livro (idLivro,titulo,genero,autor,editora,publicacao,preco) VALUES (5,'Piadas do Luciano','Comedia','Silva','Velha grafica','1986-10-11',125.87);
+INSERT INTO Livro (idLivro,titulo,genero,autor,editora,publicacao,preco) VALUES (6,'Curtindo a recursao','Tecnico','Gabs','Media grafica','2008-10-03',33.33);
+INSERT INTO Livro (idLivro,titulo,genero,autor,editora,publicacao,preco) VALUES (7,'Variaveis invariaveis','Drama','Ozzy','Velha grafica','2013-06-11',22.34);

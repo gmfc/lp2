@@ -6,9 +6,6 @@
 package br.mackenzie.fci.tc.lp2.dao;
 
 import br.mackenzie.fci.tc.lp2.exception.PersistenciaException;
-import br.mackenzie.fci.tc.lp2.model.Cidade;
-import br.mackenzie.fci.tc.lp2.model.Estado;
-import br.mackenzie.fci.tc.lp2.model.Hotel;
 import br.mackenzie.fci.tc.lp2.model.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,20 +28,21 @@ public class UsuarioDAO implements GenericoDAO<Usuario> {
         Connection connection = null;
         try {
             connection = Conexao.getInstance().getConnection();
-            String sql = "INSERT INTO USUARIO (NOME,HASHSENHA) VALUES (?,?)";
+            String sql = "INSERT INTO USUARIO (IDUSUARIO,NOME,HASHSENHA) VALUES (?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, usuario.getNome());
-            preparedStatement.setString(2, usuario.getHashSenha());
+            preparedStatement.setInt(1, usuario.getIdUsuario());
+            preparedStatement.setString(2, usuario.getNome());
+            preparedStatement.setString(3, usuario.getHashSenha());
             preparedStatement.executeUpdate();
             connection.close();
         } catch (SQLException ex) {
-            Logger.getLogger(br.mackenzie.fci.tc.lp2.dao.CidadeDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(br.mackenzie.fci.tc.lp2.dao.UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("Inserção não realizada!");
         } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
-                Logger.getLogger(CidadeDAO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
                 throw new PersistenciaException("Não foi possível fechar a conexão com  o banco de dados");
             }
         }
@@ -62,13 +60,13 @@ public class UsuarioDAO implements GenericoDAO<Usuario> {
             ps.setInt(3, usuario.getIdUsuario());
             ps.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(HotelDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("alteração não realizada!");
         } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
-                Logger.getLogger(CidadeDAO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
                 throw new PersistenciaException("Não foi possível fechar a conexão com  o banco de dados");
             }
         }
@@ -85,13 +83,13 @@ public class UsuarioDAO implements GenericoDAO<Usuario> {
             ps.executeUpdate();
             connection.close();
         } catch (SQLException ex) {
-            Logger.getLogger(HotelDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("Não foi possível excluir o registro!");
         } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
-                Logger.getLogger(CidadeDAO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
                 throw new PersistenciaException("Não foi possível fechar a conexão com  o banco de dados");
             }
         }
@@ -103,7 +101,7 @@ public class UsuarioDAO implements GenericoDAO<Usuario> {
         List<Usuario> usuarios = new ArrayList<Usuario>();
         try {
             connection = Conexao.getInstance().getConnection();
-            String sql = "SELECT * FROM HOTELAPP.CIDADE";
+            String sql = "SELECT * FROM Usuario";
             Statement select = connection.createStatement();
             ResultSet result = select.executeQuery(sql);
 
@@ -111,13 +109,13 @@ public class UsuarioDAO implements GenericoDAO<Usuario> {
                 usuarios.add(new Usuario(result.getInt("IDUSUARIO"), result.getString("NOME"), result.getString("HASHSENHA")));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(HotelDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("Não foi possível listar todos!");
         } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
-                Logger.getLogger(CidadeDAO.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
                 throw new PersistenciaException("Não foi possível fechar a conexão com  o banco de dados");
             }
         }
@@ -126,7 +124,57 @@ public class UsuarioDAO implements GenericoDAO<Usuario> {
 
     @Override
     public Usuario buscarPorId(Integer id) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection connection = null;
+        Usuario usuario = null;
+        try {
+            connection = Conexao.getInstance().getConnection();
+            String sql = "SELECT * FROM USUARIO WHERE IDUSUARIO = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet result = ps.executeQuery();
+            while (result.next()) {
+                usuario = new Usuario(result.getInt("IDUSUARIO"), result.getString("NOME"), result.getString("HASHSENHA"));
+            }
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(br.mackenzie.fci.tc.lp2.dao.UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Não foi possível realizar a busca pelo código!");
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+                throw new PersistenciaException("Não foi possível fechar a conexão com  o banco de dados");
+            }
+        }
+        return usuario;
+    }
+    
+    public Usuario buscarPorNome(String nome) throws PersistenciaException {
+        Connection connection = null;
+        Usuario usuario = null;
+        try {
+            connection = Conexao.getInstance().getConnection();
+            String sql = "SELECT * FROM USUARIO WHERE NOME = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, nome);
+            ResultSet result = ps.executeQuery();
+            while (result.next()) {
+                usuario = new Usuario(result.getInt("IDUSUARIO"), result.getString("NOME"), result.getString("HASHSENHA"));
+            }
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(br.mackenzie.fci.tc.lp2.dao.UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Não foi possível realizar a busca pelo código!");
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+                throw new PersistenciaException("Não foi possível fechar a conexão com  o banco de dados");
+            }
+        }
+        return usuario;
     }
 
 }

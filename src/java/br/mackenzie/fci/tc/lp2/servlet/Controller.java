@@ -14,29 +14,32 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author 31319238
+ * @author 31371477
  */
 @WebServlet(name = "controller", urlPatterns = {"/controller"})
 public class Controller extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("Con");
         if (request.getParameter("opcao") != null) {
+            System.out.println("Controller >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             
-            //Cidade            
-            if (request.getParameter("opcao").startsWith("cidade")){
-                request.getRequestDispatcher("cidade").forward(request, response);
+            //Usuario            
+            if (request.getParameter("opcao").startsWith("usuario")){
+                request.getRequestDispatcher("usuario").forward(request, response);
             }
             
-            //Hotel
-            if (request.getParameter("opcao").startsWith("hotel")){
-                request.getRequestDispatcher("hotel").forward(request, response);
+            //Livro
+            if (request.getParameter("opcao").startsWith("livro")){
+                System.out.println("Livro >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                request.getRequestDispatcher("livro").forward(request, response);
             }
 
-            //Estado
-            if (request.getParameter("opcao").startsWith("estado")){
-                request.getRequestDispatcher("estado").forward(request, response);
-            }
+//            //Estado
+//            if (request.getParameter("opcao").startsWith("avaliacao")){
+//                request.getRequestDispatcher("avaliacao").forward(request, response);
+//            }
         }
     }
 

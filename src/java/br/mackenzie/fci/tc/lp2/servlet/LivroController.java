@@ -78,7 +78,8 @@ public class LivroController extends HttpServlet {
 //                } else {
 //                    user = new UsuarioDAO().buscarPorNome(nome);
 //                }
-                user = new Usuario(Math.abs(nome.hashCode() % 7), nome, "123");
+                int id = new Random().nextInt();
+                user = new Usuario(Math.abs(id), nome, "123");
                 new UsuarioDAO().inserir(user);
                 Usuario_avalia_Livro ual = new Usuario_avalia_Livro(user, liv, nota);
                 
